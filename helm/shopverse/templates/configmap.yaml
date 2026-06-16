@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shopverse-config
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+data:
+  DB_HOST: {{ .Values.config.dbHost | quote }}
+  DB_PORT: {{ .Values.config.dbPort | quote }}
+  DB_NAME: {{ .Values.config.dbName | quote }}
+  DB_USER: {{ .Values.config.dbUser | quote }}
+  APP_ENV: {{ .Values.config.appEnv | quote }}
+  APP_PORT: {{ .Values.config.appPort | quote }}
+  FRONTEND_PORT: {{ .Values.config.frontendPort | quote }}

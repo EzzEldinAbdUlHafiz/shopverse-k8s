@@ -1,0 +1,66 @@
+# Global
+global:
+  namespace: shopverse
+  createNamespace: false
+  environment: production
+# Backend
+backend:
+  image:
+    repository: 676206911950.dkr.ecr.us-east-1.amazonaws.com/shopverse-backend
+    tag: "b517ed1ddf617ef89947d21a2137b25cead93d68"
+    pullPolicy: IfNotPresent
+  replicas: 2
+  port: 8080
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "300m"
+  hpa:
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization: 70
+    memoryUtilization: 80
+# Frontend
+frontend:
+  image:
+    repository: 676206911950.dkr.ecr.us-east-1.amazonaws.com/shopverse-frontend
+    tag: "b517ed1ddf617ef89947d21a2137b25cead93d68"
+    pullPolicy: IfNotPresent
+  replicas: 2
+  port: 80
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+# Config
+config:
+  dbName: shopverse
+  dbUser: admin
+  dbHost: shopverse-db.cqlqcgekqk65.us-east-1.rds.amazonaws.com
+  dbPort: "3306"
+  appPort: "8080"
+  frontendPort: "80"
+  appEnv: production
+# Ingress
+ingress:
+  className: alb
+  scheme: internet-facing
+  healthcheckPath: /health
+# ResourceQuota (optional, for namespace limits)
+resourceQuota:
+  pods: 20
+  requests:
+    cpu: "2"
+    memory: 4Gi
+  limits:
+    cpu: "4"
+    memory: 8Gi
+# NetworkPolicy (optional, for namespace isolation)
+networkPolicy:
+  enabled: true

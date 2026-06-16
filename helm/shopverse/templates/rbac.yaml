@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: shopverse-backend-sa
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+    component: backend
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: shopverse-frontend-sa
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+    component: frontend
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: shopverse-backend-role
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+    component: backend
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: shopverse-frontend-role
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+    component: frontend
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: shopverse-backend-binding
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+    component: backend
+subjects:
+  - kind: ServiceAccount
+    name: shopverse-backend-sa
+    namespace: {{ .Values.global.namespace }}
+roleRef:
+  kind: Role
+  name: shopverse-backend-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: shopverse-frontend-binding
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: shopverse
+    component: frontend
+subjects:
+  - kind: ServiceAccount
+    name: shopverse-frontend-sa
+    namespace: {{ .Values.global.namespace }}
+roleRef:
+  kind: Role
+  name: shopverse-frontend-role
+  apiGroup: rbac.authorization.k8s.io

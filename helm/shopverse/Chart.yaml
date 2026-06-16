@@ -1,0 +1,14 @@
+apiVersion: v2
+name: shopverse
+description: ShopVerse 3-tier E-commerce Application
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - ecommerce
+  - shopverse
+  - golang
+  - react
+maintainers:
+  - name: ShopVerse Team
+home: https://github.com/shopverse
